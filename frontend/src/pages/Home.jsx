@@ -4,6 +4,7 @@ import api from '../services/api';
 
 export default function Home() {
   const [restaurants, setRestaurants] = useState([]);
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -20,17 +21,31 @@ export default function Home() {
       });
   }, []);
 
+  const filteredRestaurants = restaurants.filter((r) =>
+    r.restaurant_name.toLowerCase().includes(search.toLowerCase()) ||
+    r.address.toLowerCase().includes(search.toLowerCase())
+  );
+
   if (loading) return <p className="text-center p-8">Loading restaurants...</p>;
   if (error) return <p className="text-center p-8 text-red-500">{error}</p>;
 
   return (
     <div className="p-8">
-      <h2 className="text-3xl font-bold mb-6">Popular Restaurants</h2>
+      <h2 className="text-3xl font-bold mb-4">Popular Restaurants</h2>
+
+      <input
+        type="text"
+        placeholder="Search restaurants by name or location..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border p-3 rounded w-full max-w-md mb-6"
+      />
+
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {restaurants.length === 0 ? (
-          <p>No restaurants found. Add some via the Django admin panel.</p>
+        {filteredRestaurants.length === 0 ? (
+          <p>No restaurants match your search.</p>
         ) : (
-          restaurants.map((r) => (
+          filteredRestaurants.map((r) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
