@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 
 export default function Home() {
@@ -30,11 +31,15 @@ export default function Home() {
           <p>No restaurants found. Add some via the Django admin panel.</p>
         ) : (
           restaurants.map((r) => (
-            <div key={r.id} className="border rounded-lg shadow p-4 hover:shadow-lg transition">
+            <Link
+              to={`/restaurant/${r.id}`}
+              key={r.id}
+              className="border rounded-lg shadow p-4 hover:shadow-lg transition block"
+            >
               <h3 className="text-xl font-semibold">{r.restaurant_name}</h3>
               <p className="text-gray-600">{r.address}</p>
               <p className="text-sm mt-2">⭐ {r.rating} · {r.delivery_time}</p>
-            </div>
+            </Link>
           ))
         )}
       </div>
