@@ -1,10 +1,15 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Home from './pages/Home';
+
 function App() {
   return (
-    <div className="min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold text-center p-8">
-        Online Food Ordering System
-      </h1>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
