@@ -8,7 +8,7 @@ export default function Navbar() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     navigate('/login');
-    window.location.reload(); // ensures Navbar re-checks login state
+    window.location.reload();
   };
 
   return (
@@ -21,9 +21,12 @@ export default function Navbar() {
         <Link to="/cart" className="hover:underline">Cart</Link>
         <Link to="/orders" className="hover:underline">Orders</Link>
         {isLoggedIn ? (
-          <button onClick={handleLogout} className="hover:underline">
-            Logout
-          </button>
+          <>
+            <Link to="/profile" className="hover:underline">Profile</Link>
+            <button onClick={handleLogout} className="hover:underline">
+              Logout
+            </button>
+          </>
         ) : (
           <Link to="/login" className="hover:underline">Login</Link>
         )}
