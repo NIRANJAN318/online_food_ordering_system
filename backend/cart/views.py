@@ -1,7 +1,5 @@
-from django.shortcuts import render
-
-# Create your views here.
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
 from .models import Cart
 from .serializers import CartSerializer
 
@@ -10,9 +8,21 @@ class CartViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        # Only return the logged-in user's own cart items
         return Cart.objects.filter(user=self.request.user)
 
+    def create(self, request, *args, **kwargs):
+        food_id = request.data.get('food')
+        quantity = int(request.data.get('quantity', 1))
+
+        existing_item = Cart.objects.filter(user=request.user, food_id=food_id).first()
+
+        if existing_item:
+            existing_item.quantity += quantity
+            existing_item.save()
+            serializer = self.get_serializer(existing_item)
+            return Response(serializer.data)
+
+        return super().create(request, *args, **kwargs)
+
     def perform_create(self, serializer):
-        # Automatically attach the logged-in user when adding to cart
         serializer.save(user=self.request.user)
