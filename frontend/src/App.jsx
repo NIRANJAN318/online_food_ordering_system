@@ -1,7 +1,9 @@
 function App() {
   return (
-    <div className="min-h-screen bg-primary flex items-center justify-center">
-      <h1 className="text-white text-4xl font-bold">Tailwind is working!</h1>
+    <div className="min-h-screen bg-gray-100">
+      <h1 className="text-2xl font-bold text-center p-8">
+        Online Food Ordering System
+      </h1>
     </div>
   );
 }
