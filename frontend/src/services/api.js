@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/',
 });
 
 api.interceptors.request.use((config) => {
@@ -23,18 +23,18 @@ api.interceptors.response.use(
 
       if (refreshToken) {
         try {
-          const res = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
-            refresh: refreshToken,
-          });
+          const res = await axios.post(
+            `${import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/'}token/refresh/`,
+            { refresh: refreshToken }
+          );
           localStorage.setItem('access_token', res.data.access);
           originalRequest.headers.Authorization = `Bearer ${res.data.access}`;
           return api(originalRequest);
         } catch (refreshError) {
-          // Refresh token also invalid/expired - clear everything
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
           delete originalRequest.headers.Authorization;
-          return api(originalRequest); // retry without auth (for public endpoints)
+          return api(originalRequest);
         }
       } else {
         delete originalRequest.headers.Authorization;
