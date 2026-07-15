@@ -48,6 +48,15 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://online-food-ordering-system-theta.vercel.app",
+]
+
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://online-food-ordering-system.*\.vercel\.app$",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://online-food-ordering-system-theta.vercel.app",
 ]
 
 ROOT_URLCONF = 'config.urls'
